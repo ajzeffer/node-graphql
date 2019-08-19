@@ -1,47 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const crypto = require('crypto');
+const Users_1 = require("../models/Users");
 class UsersService {
     constructor() {
-        this.users = [];
+        this.users = [
+            new Users_1.User(1, "adam", "zeffer", "az@prodiginet.com", "12asfsf", 1),
+            new Users_1.User(2, "james", "zeffer", "jj@prodiginet.com", "12asfsf", 2),
+            new Users_1.User(3, "john", "zeffer", "jp@prodiginet.com", "12asfsf", 2),
+            new Users_1.User(4, "paul", "zeffer", "paul@prodiginet.com", "12asfsf", 1),
+            new Users_1.User(5, "ringo", "zeffer", "ringo@prodiginet.com", "12asfsf", 3),
+        ];
     }
-    configTypeDefs() {
-        let typeDefs = `
-          type User {
-            firstName: String,
-            lastName: String,
-            id: Int,
-            password: String,
-            permissionLevel: Int,
-            email: String
-          } `;
-        typeDefs += `
-          extend type Query {
-          users: [User]
-        }
-        `;
-        typeDefs += `
-          extend type Mutation {
-            user(firstName:String,
-             lastName: String,
-             password: String,
-             permissionLevel: Int,
-             email: String,
-             id:Int): User!
-          }`;
-        return typeDefs;
+    GetUserById(id) {
+        return this.users.filter(x => x.id === id)[0];
     }
-    configResolvers(resolvers) {
-        resolvers.Query.users = () => {
-            return this.users;
-        };
-        resolvers.Mutation.user = (_, user) => {
-            let salt = crypto.randomBytes(16).toString('base64');
-            let hash = crypto.createHmac('sha512', salt).update(user.password).digest("base64");
-            user.password = hash;
-            this.users.push(user);
-            return user;
-        };
+    GetAll() {
+        return this.users;
+    }
+    GetUserByPermission(permLevel) {
+        return this.users.filter(x => x.permissionLevel === permLevel);
     }
 }
 exports.UsersService = UsersService;

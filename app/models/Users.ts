@@ -1,10 +1,10 @@
 export class User {
-    private id: Number = 0;
-    private firstName: String = '';
-    private lastName: String = '';
-    private email: String = '';
-    private password: String = '';
-    private permissionLevel: Number = 1;
+    public id: Number = 0;
+    public firstName: String = '';
+    public lastName: String = '';
+    public email: String = '';
+    public password: String = '';
+    public permissionLevel: Number = 1;
 
     constructor(id: Number,
         firstName: String,

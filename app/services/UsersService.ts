@@ -1,49 +1,21 @@
-const crypto = require('crypto');
+import { User } from "../models/Users";
 
 export class UsersService {
+  public users: User[] = [
+    new User(1, "adam", "zeffer", "az@prodiginet.com", "12asfsf", 1),
+    new User(2, "james", "zeffer", "jj@prodiginet.com", "12asfsf", 2),
+    new User(3, "john", "zeffer", "jp@prodiginet.com", "12asfsf", 2),
+    new User(4, "paul", "zeffer", "paul@prodiginet.com", "12asfsf", 1),
+    new User(5, "ringo", "zeffer", "ringo@prodiginet.com", "12asfsf", 3),
+  ];
 
-    public users: any = [];
-
-    configTypeDefs() {
-        let typeDefs = `
-          type User {
-            firstName: String,
-            lastName: String,
-            id: Int,
-            password: String,
-            permissionLevel: Int,
-            email: String
-          } `;
-        typeDefs += `
-          extend type Query {
-          users: [User]
-        }
-        `;
-
-        typeDefs += `
-          extend type Mutation {
-            user(firstName:String,
-             lastName: String,
-             password: String,
-             permissionLevel: Int,
-             email: String,
-             id:Int): User!
-          }`;
-        return typeDefs;
-    }
-
-    configResolvers(resolvers: any) {
-        resolvers.Query.users = () => {
-            return this.users;
-        };
-        resolvers.Mutation.user = (_: any, user: any) => {
-            let salt = crypto.randomBytes(16).toString('base64');
-            let hash = crypto.createHmac('sha512', salt).update(user.password).digest("base64");
-            user.password = hash;
-            this.users.push(user);
-            return user;
-        };
-
-    }
-
+  public GetUserById(id: Number): User {
+    return this.users.filter(x => x.id === id)[0];
+  }
+  public GetAll(): Array<User> {
+    return this.users;
+  }
+  public GetUserByPermission(permLevel: Number): Array<User> {
+    return this.users.filter(x => x.permissionLevel === permLevel);
+  }
 }
