@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLInt } from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLInt, graphqlSync } from 'graphql';
 import { Product } from '../models/Product';
 import { Manufacturer } from '../models/Manufacturer';
 import ManufacturerType from './ManufacturerType'
@@ -13,6 +13,7 @@ const ProductType = new GraphQLObjectType<Product>({
         name: { type: GraphQLID },
         description: { type: GraphQLString },
         price: { type: GraphQLString },
+        inventoryId: { type: GraphQLString },
         manufacturer: {
             type: ManufacturerType,
             resolve(parent, args) {
